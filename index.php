@@ -75,8 +75,8 @@ Cho tình đẹp mãi mặn mà yêu thương">
 <script type="text/javascript">
 	let slide = document.querySelector('#slide');
 	//define class as function-style
-	let Quick_Loop = function(images){
-		const step       = 2000; //60 ms
+	let Quick_Loop = function(images, config = {}){
+		let step       = 2000; //60 ms
 		let count        = 0;
 		let is_preloaded = false;
 
@@ -104,14 +104,15 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		//default as set up
 		// const ANIMATION_OUT    = 'scale(0,0)';
 		const ANIMATION_OUT    = {
-			name : 'transform',
-			value: 'scale(0,0)'
+			name : 'opacity',
+			value: '0'
 		};
 		// const ANIMATION_IN     = 'scale(1,1)';
 		const ANIMATION_IN     = {
-			name : 'transform',
-			value: 'scale(1,1)'  
+			name : 'opacity',
+			value: '1'  
 		};
+
 		slide.style.transition = `all ${duration}s ease-in-out`;
 
 		let run = function(){
