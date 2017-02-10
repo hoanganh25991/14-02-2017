@@ -8,7 +8,7 @@
 	foreach ($image_files as $file_names) {
 		# code...
 		if(is_image($base_path."/{$file_names}"))
-			$images[] = $file_names;
+			$images[] = $base_url."/images/{$file_names}";
 	}
 
 	function is_image($path){
@@ -24,7 +24,7 @@
 	    return false;
 	}
 
-	var_dump($images);
+	// var_dump($images);
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,11 +46,90 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		height: 100%;
 		background-color: black;
 	}
+
+	#slide-container {
+		width: 600px;
+		height: 400px;
+		margin: auto;
+		overflow: hidden;
+	}
+
+	#slide {
+		height: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		
+	}
+
 </style>
 </head>
 <body>
+<div id='slide-container'>
+	<img id='slide'>
+</div>
+<script>
+	<?php $images_json = json_encode($images); ?>
+	<?php echo "window.images = {$images_json};" ?>
+</script>
 <script type="text/javascript">
-	
+	let slide = document.querySelector('#slide');
+	//define class as function-style
+	let Quick_Loop = function(images){
+		const step       = 2000; //60 ms
+		let count        = 0;
+		let is_preloaded = false;
+
+		let preload = function(){
+			if(is_preloaded){
+				console.log('Images preloaded');
+				return;
+			}
+
+			images.forEach(url => {
+				let i = new Image();
+				i.src = url;
+			});
+
+			is_preloaded = true;
+		}
+
+		//execute preload, rather than let in inside run
+		//bcs, right after run is setTimeout, which doesn't wait for
+		//preload finish
+		preload();
+
+		let run = function(){
+			if(typeof images[count] == 'undefined'){
+					console.log('End slide loop');
+					//reset count
+					count = 0;
+					return;
+			}
+			
+			setTimeout(function(){
+				requestAnimationFrame(function(){
+					slide.src = images[count];
+					//transform: scale(0,0);
+	    			//transform-origin: bottom left;
+	    			i.style.transform = 'scale(0,0)';
+	    			i.style.transformOrigin = 'bottom left';
+					count++;
+					//continue run
+					run();
+				});
+			}, step);
+		}
+
+		return {run};
+	}
+
+
+	let quick_loop = Quick_Loop(images);
+	// quick_loop.run();
+	window.addEventListener('click', function(){
+		quick_loop.run();
+	});
 </script>
 </body>
 </html>
