@@ -59,7 +59,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		margin-left: auto;
 		margin-right: auto;
 		display: block;
-		
+		transform-origin: bottom left;
 	}
 
 </style>
@@ -99,6 +99,21 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		//preload finish
 		preload();
 
+		//for transform animation
+		const duration = step/2/1000; //count in s
+		//default as set up
+		// const ANIMATION_OUT    = 'scale(0,0)';
+		const ANIMATION_OUT    = {
+			name : 'transform',
+			value: 'scale(0,0)'
+		};
+		// const ANIMATION_IN     = 'scale(1,1)';
+		const ANIMATION_IN     = {
+			name : 'transform',
+			value: 'scale(1,1)'  
+		};
+		slide.style.transition = `all ${duration}s ease-in-out`;
+
 		let run = function(){
 			if(typeof images[count] == 'undefined'){
 					console.log('End slide loop');
@@ -109,16 +124,23 @@ Cho tình đẹp mãi mặn mà yêu thương">
 			
 			setTimeout(function(){
 				requestAnimationFrame(function(){
+					slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
 					slide.src = images[count];
-					//transform: scale(0,0);
-	    			//transform-origin: bottom left;
-	    			i.style.transform = 'scale(0,0)';
-	    			i.style.transformOrigin = 'bottom left';
+					//create a point let it disappear
+					setTimeout(function(){
+						requestAnimationFrame(function(){
+							console.log('call', ANIMATION_OUT);
+							slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
+						});
+					}, step/2);
+
 					count++;
 					//continue run
 					run();
 				});
 			}, step);
+
+			
 		}
 
 		return {run};
