@@ -52,6 +52,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		height: 400px;
 		margin: auto;
 		overflow: hidden;
+		position: relative;
 	}
 
 	#slide {
@@ -59,7 +60,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		margin-left: auto;
 		margin-right: auto;
 		display: block;
-		transform-origin: bottom left;
+		position: relative;
 	}
 
 </style>
@@ -76,7 +77,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 	let slide = document.querySelector('#slide');
 	//define class as function-style
 	let Quick_Loop = function(images, config = {}){
-		let step       = 2000; //60 ms
+		let step       = 500; //60 ms
 		let count        = 0;
 		let is_preloaded = false;
 
@@ -101,19 +102,10 @@ Cho tình đẹp mãi mặn mà yêu thương">
 
 		//for transform animation
 		const duration = step/2/1000; //count in s
-		//default as set up
-		// const ANIMATION_OUT    = 'scale(0,0)';
-		const ANIMATION_OUT    = {
-			name : 'opacity',
-			value: '0'
-		};
-		// const ANIMATION_IN     = 'scale(1,1)';
-		const ANIMATION_IN     = {
-			name : 'opacity',
-			value: '1'  
-		};
 
-		slide.style.transition = `all ${duration}s ease-in-out`;
+		slide.style.transition = `all 0s ease-in-out`;
+
+		let animation;
 
 		let run = function(){
 			if(typeof images[count] == 'undefined'){
@@ -125,13 +117,16 @@ Cho tình đẹp mãi mặn mà yêu thương">
 			
 			setTimeout(function(){
 				requestAnimationFrame(function(){
-					slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
+					slide.style.transition = `all 0s ease-in-out`;
+					slide.style.transform = 'translate(0px, 0px)';
 					slide.src = images[count];
 					//create a point let it disappear
 					setTimeout(function(){
-						requestAnimationFrame(function(){
-							console.log('call', ANIMATION_OUT);
-							slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
+						if(animation)
+							cancelAnimationFrame(animation);
+						aniamtion = requestAnimationFrame(function(){
+							slide.style.transition = `all ${duration}s ease-in-out`;
+							slide.style.transform = 'translate(600px, 0px)';
 						});
 					}, step/2);
 
