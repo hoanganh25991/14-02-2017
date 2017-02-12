@@ -1,43 +1,36 @@
 <!-- IMG_0649.JPG -->
 <?php 
-$base_url    = 'http://localhost/14-02-2017';
-// $base_path   = 'D:\www\html\14-02-2017\images';
-$base_path   = 'D:\www\html\14-02-2017\resized';
-$image_files = scandir(__DIR__."/resized");
-
-echo count($image_files);
-$count = 1;
-foreach ($image_files as $index => $file_name) {
-	exec("mv {$base_path}/{$file_name} {$base_path}/{$count}.jpg");
-	$count++;
-}
-die;
-?>
-<?php 
 	$base_url    = 'http://localhost/14-02-2017';
 	// $base_path   = 'D:\www\html\14-02-2017\images';
 	$base_path   = 'D:\www\html\14-02-2017\resized';
-	$image_files = scandir(__DIR__."/images");
+	$image_files = scandir(__DIR__."/resized");
+
+	unset($image_files[0]);
+	unset($image_files[1]);
 
 	$images = [];
 	foreach ($image_files as $file_names) {
-		# code...
-		if(is_image($base_path."/{$file_names}"))
-			$images[] = $base_url."/resized/{$file_names}";
+		$images[] = $base_url."/resized/{$file_names}";
 	}
+	// foreach ($image_files as $file_names) {
+	// 	# code...
+	// 	if(is_image($base_path."/{$file_names}"))
+	// 	if($file_names != '.' || $file_names != '..')
+	// 		$images[] = $base_url."/resized/{$file_names}";
+	// }
 
-	function is_image($path){
-	    $a = @getimagesize($path);
-	    $image_type = $a[2];
+	// function is_image($path){
+	//     $a = @getimagesize($path);
+	//     $image_type = $a[2];
 	    
-	    $allowed_typed = [IMAGETYPE_JPEG, IMAGETYPE_PNG];
+	//     $allowed_typed = [IMAGETYPE_JPEG, IMAGETYPE_PNG];
 
-	    if(in_array($image_type , $allowed_typed)){
-	        return true;
-	    }
+	//     if(in_array($image_type , $allowed_typed)){
+	//         return true;
+	//     }
 
-	    return false;
-	}
+	//     return false;
+	// }
 
 	// var_dump($images);
 ?>
