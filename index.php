@@ -66,7 +66,7 @@ foreach($image_files as $file_name){
 </div>
 <script>
     <?php $images_json = json_encode($images); ?>
-    <?php echo "window.shuffed_images = {$images_json};" ?>
+    <?php echo "window.images = {$images_json};" ?>
 </script>
 <script src="main.js"></script>
 </body>

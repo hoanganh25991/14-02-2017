@@ -1,6 +1,6 @@
 //define class as function-style
 let Quick_Loop = function(images, slide){
-	let step = 1000;
+	let f = 1000;
 	let count = 0;
 
 	let preload = function(){
@@ -43,7 +43,7 @@ let Quick_Loop = function(images, slide){
 		}
 
 		let percent = (images.length - count) / images.length;
-		let step = easeInOutCubic(percent) * step;
+		let step = easeInOutCubic(percent) * f;
 		// step = step < 200 ? 200 : step ;
 		// console.log(step);
 
