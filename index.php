@@ -1,14 +1,29 @@
 <!-- IMG_0649.JPG -->
 <?php 
+$base_url    = 'http://localhost/14-02-2017';
+// $base_path   = 'D:\www\html\14-02-2017\images';
+$base_path   = 'D:\www\html\14-02-2017\resized';
+$image_files = scandir(__DIR__."/resized");
+
+echo count($image_files);
+$count = 1;
+foreach ($image_files as $index => $file_name) {
+	exec("mv {$base_path}/{$file_name} {$base_path}/{$count}.jpg");
+	$count++;
+}
+die;
+?>
+<?php 
 	$base_url    = 'http://localhost/14-02-2017';
-	$base_path   = 'D:\www\html\14-02-2017\images';
+	// $base_path   = 'D:\www\html\14-02-2017\images';
+	$base_path   = 'D:\www\html\14-02-2017\resized';
 	$image_files = scandir(__DIR__."/images");
 
 	$images = [];
 	foreach ($image_files as $file_names) {
 		# code...
 		if(is_image($base_path."/{$file_names}"))
-			$images[] = $base_url."/images/{$file_names}";
+			$images[] = $base_url."/resized/{$file_names}";
 	}
 
 	function is_image($path){
@@ -76,7 +91,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 	let slide = document.querySelector('#slide');
 	//define class as function-style
 	let Quick_Loop = function(images){
-		const step       = 2000; //60 ms
+		let f = 1000;
 		let count        = 0;
 		let is_preloaded = false;
 
@@ -100,7 +115,6 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		preload();
 
 		//for transform animation
-		const duration = step/2/1000; //count in s
 		//default as set up
 		// const ANIMATION_OUT    = 'scale(0,0)';
 		const ANIMATION_OUT    = {
@@ -112,7 +126,20 @@ Cho tình đẹp mãi mặn mà yêu thương">
 			name : 'transform',
 			value: 'scale(1,1)'  
 		};
-		slide.style.transition = `all ${duration}s ease-in-out`;
+		
+		// let easeInOutCubic = function(x) {
+		// 	// return (x * x * x);
+		// 	return (x * x);
+		// };
+		let easeInOutCubic = function(x) {
+			if (x < 0.5) {
+				return (2 * x * x);
+	
+			} else {
+				x -= 1;
+				return 1 - (2 * x * x);
+			}
+		};
 
 		let run = function(){
 			if(typeof images[count] == 'undefined'){
@@ -121,8 +148,15 @@ Cho tình đẹp mãi mặn mà yêu thương">
 					count = 0;
 					return;
 			}
+
+			let percent = (images.length - count) / images.length;
+			let step = easeInOutCubic(percent) * f;
+			step = step < 200 ? 200 : step ;
+			console.log(step);
 			
 			setTimeout(function(){
+				duration = step/4/1000;
+				slide.style.transition = `all ${duration}s ease-in-out`;
 				requestAnimationFrame(function(){
 					slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
 					slide.src = images[count];
@@ -132,9 +166,12 @@ Cho tình đẹp mãi mặn mà yêu thương">
 							console.log('call', ANIMATION_OUT);
 							slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
 						});
-					}, step/2);
+					}, step * 3/4);
+
+					
 
 					count++;
+					console.log(count);
 					//continue run
 					run();
 				});
@@ -146,6 +183,26 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		return {run};
 	}
 
+	let shuffle = function (array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;
+
+	  // While there remain elements to shuffle...
+	  while (0 !== currentIndex) {
+
+	    // Pick a remaining element...
+	    randomIndex = Math.floor(Math.random() * currentIndex);
+	    currentIndex -= 1;
+
+	    // And swap it with the current element.
+	    temporaryValue = array[currentIndex];
+	    array[currentIndex] = array[randomIndex];
+	    array[randomIndex] = temporaryValue;
+	  }
+
+	  return array;
+	}
+
+	images = shuffle(images);
 
 	let quick_loop = Quick_Loop(images);
 	// quick_loop.run();
