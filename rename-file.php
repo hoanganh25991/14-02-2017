@@ -1,6 +1,6 @@
 <?php 
 $base_url    = 'http://localhost/14-02-2017';
-// $base_path   = 'D:\www\html\14-02-2017\images';
+// $base_path   = 'D:\www\html\14-02-2017\shuffed_images';
 $base_path   = 'D:\www\html\14-02-2017\resized';
 $image_files = scandir(__DIR__."/resized");
 echo count($image_files);
