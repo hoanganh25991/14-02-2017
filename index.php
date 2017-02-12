@@ -36,7 +36,7 @@ foreach($image_files as $file_name){
     <meta property="og:type" content="article">
     <meta property="og:title" content="Voi con ft. Meo con ＼＿ヘ(ᐖ◞)､">
     <meta property="og:description"
-          content="Anh vẫn ước, bình minh mỗi sáng. Được nhìn em ngắm dáng kiêu xa. Chạy theo một dải ngân hà. Cho tình đẹp mãi mặn mà yêu thương">
+          content="Anh vẫn ước, bình minh mỗi sáng. Được nhìn em ngắm dáng kiêu xa. Chạy theo một dải ngân hà. Cho tình đẹp mãi mặn mà yêu thương.">
     <meta property="og:image" content="https://tinker.press/images/make-you-smile-2.jpg">
     <meta property="og:site_name" content="tinker.press">
     <style type="text/css">
@@ -56,17 +56,49 @@ foreach($image_files as $file_name){
             margin-left: auto;
             margin-right: auto;
             display: block;
+            /*transform-origin: bottom left;*/
+        }
+
+        #tho {
+            border-left: 5px solid seagreen;
+            background-color: antiquewhite;
+            padding: 10px 20px;
+            max-width: 700px;
+            border-left: 5px solid seagreen;
+            font-size: 2em;
+            border-radius: 3px;
+        }
+
+        #control{
+            border-left: 5px solid seagreen;
+            background-color: antiquewhite;
+            padding: 10px 20px;
+            max-width: 100px;
+            border-radius: 3px;
+            transition: all 5s  ease-in-out;
+            opacity: 0;
         }
 
     </style>
 </head>
 <body>
+<p id="tho">
+    Anh vẫn ước, bình minh mỗi sáng.<br>
+    Được nhìn em ngắm dáng kiêu xa.<br>
+    Chạy theo một dải ngân hà.<br>
+    Cho tình đẹp mãi mặn mà yêu thương.
+</p>
+
+<p id="control">
+    <a move-step="black" href="#">black</a> or <a move-step="white" href="#">white</a>
+</p>
+
 <div id='slide-container'>
     <img id='slide'>
 </div>
 <script>
     <?php $images_json = json_encode($images); ?>
-    <?php echo "window.shuffed_images = {$images_json};" ?>
+    <?php echo "window.images = {$images_json};" ?>
 </script>
 <script src="main.js"></script>
 </body>
