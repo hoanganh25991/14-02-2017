@@ -1,7 +1,7 @@
 <!-- IMG_0649.JPG -->
 <?php 
 	$base_url    = 'http://localhost/14-02-2017';
-	$base_path   = 'D:\www\html\14-02-2017\images';
+	$base_path   = 'D:\www\html\14-02-2017\resized';
 	$image_files = scandir(__DIR__."/images");
 
 	$images = [];
@@ -40,27 +40,31 @@ Chạy theo một dải ngân hà
 Cho tình đẹp mãi mặn mà yêu thương">
 <meta id="fbImage"       property="og:image"       content="https://tinker.press/images/make-you-smile-2.jpg">
 <meta id="fbSiteName"    property="og:site_name"   content="tinker.press">
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> -->
 <style type="text/css">
 	body {
-		width: 100%;
-		height: 100%;
 		background-color: black;
 	}
 
 	#slide-container {
 		width: 600px;
 		height: 400px;
-		margin: auto;
+		/*margin: auto;*/
 		overflow: hidden;
 		position: relative;
+		top: 200px;
+		left: 200px;
 	}
 
-	#slide {
+	#next-slide {
 		height: 100%;
 		margin-left: auto;
 		margin-right: auto;
 		display: block;
-		position: relative;
+		position: absolute;
+		top: 0;
+		transition: all 1s easy-in-out;
 	}
 
 </style>
@@ -68,13 +72,15 @@ Cho tình đẹp mãi mặn mà yêu thương">
 <body>
 <div id='slide-container'>
 	<img id='slide'>
+	<img id='next-slide'>
 </div>
 <script>
 	<?php $images_json = json_encode($images); ?>
 	<?php echo "window.images = {$images_json};" ?>
 </script>
 <script type="text/javascript">
-	let slide = document.querySelector('#slide');
+	let slide      = document.querySelector('#slide');
+	let next_slide = document.querySelector('#next-slide');
 	//define class as function-style
 	let Quick_Loop = function(images, config = {}){
 		let step       = 500; //60 ms
@@ -101,9 +107,7 @@ Cho tình đẹp mãi mặn mà yêu thương">
 		preload();
 
 		//for transform animation
-		const duration = step/2/1000; //count in s
-
-		slide.style.transition = `all 0s ease-in-out`;
+		let duration = step/2/1000; //count in s
 
 		let animation;
 
@@ -117,19 +121,13 @@ Cho tình đẹp mãi mặn mà yêu thương">
 			
 			setTimeout(function(){
 				requestAnimationFrame(function(){
-					slide.style.transition = `all 0s ease-in-out`;
-					slide.style.transform = 'translate(0px, 0px)';
-					slide.src = images[count];
+					next_slide.src = images[count];
+					if(count % 2 == 0){
+						next_slide.style.opacity = 1;
+					}else{
+						next_slide.style.opacity = 0;
+					}
 					//create a point let it disappear
-					setTimeout(function(){
-						if(animation)
-							cancelAnimationFrame(animation);
-						aniamtion = requestAnimationFrame(function(){
-							slide.style.transition = `all ${duration}s ease-in-out`;
-							slide.style.transform = 'translate(600px, 0px)';
-						});
-					}, step/2);
-
 					count++;
 					//continue run
 					run();
