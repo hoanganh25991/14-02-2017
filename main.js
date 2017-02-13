@@ -37,6 +37,7 @@ let Quick_Loop = function(images, slide){
 	let run = function(){
 		if(typeof images[count] == 'undefined'){
 			console.log('End slide loop');
+			console.time('quick_loop');
 			//reset count
 			count = 0;
 			return;
@@ -48,17 +49,22 @@ let Quick_Loop = function(images, slide){
 		// console.log(step);
 
 		setTimeout(function(){
-			slide.style.transition = `all ${0.1}s ease-in-out`;
-			slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
-			slide.src = images[count];
-
+			console.log('IN', new Date().getTime());
 			//create a point let it disappear
+			let percent2 = (images.length - (count+1)) / images.length;
+			let step2 = easeInOutCubic(percent2) * f;
+
+			slide.src = images[count];
+			slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
+			slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
+
 			setTimeout(function(){
 				requestAnimationFrame(function(){
+					console.log('OUT', new Date().getTime());
 					// console.log('call', ANIMATION_OUT);
 					slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
 				});
-			}, step * 1 / 2);
+			}, step2 * 1 / 2);
 
 			count++;
 			// console.log(count);
@@ -97,16 +103,58 @@ let init = function(images){
 	let shuffed_images = shuffle(images);
 
 	let i1 = shuffed_images.slice(0, 40);
-	let slide = document.querySelector('#slide');
+	console.log(i1);
 
-	let quick_loop = Quick_Loop(i1, slide);
-// quick_loop.run();
-	window.addEventListener('click', function(){
-		quick_loop.run();
+	let preload = function(images){
+		images.forEach(url =>{
+			let i = new Image;
+			i.src = url;
+		})
+		;
+	}
+
+//execute preload
+	preload(i1);
+	//show #tho
+	let tho_p = document.querySelector('#tho');
+	let control = document.querySelector('#control');
+	//show control up
+	control.style.opacity = 1;
+
+	control.addEventListener('click', function(e){
+		console.log(e);
+		let a = e.target;
+		if(a.tagName != 'A'){
+			window.alert('Bấm vào cái link, con vợ tui, GRUUUU..');
+			return;
+		}
+
+		let move_step = a.getAttribute('move-step');
+
+		//info read, remove out
+		control.remove();
+
+		let tho = 'white';
+		if(move_step == 'white')
+			tho = 'Hữu duyên thiên lý năng tương ngộ\nVô duyên đối diện đá vêu mồm\nAnh yêu em hok về gian dối\nTình yêu chúng mình vô đối phải hok em\n＼＿ヘ(ᐖ◞)､';
+		if(move_step == 'black')
+			tho = 'Ước gì em biến thành trâu\nĐể anh là đỉa anh bâu vào đùi\nƯớc gì anh biến thành chầy\nĐể em làm cối anh Giã ngày Giã đêm\nᕕ( ᐛ )ᕗ';
+
+		tho_p.innerHTML = tho.replace(/\n/g, '<br>');
+
+		//run quick loop
+		setTimeout(function(){
+			console.time('quick_loop');
+			//remove out
+			tho_p.remove();
+			let slide = document.querySelector('#slide');
+			let quick_loop = Quick_Loop(i1, slide);
+			quick_loop.run();
+		}, 5000);
 	});
 }
 
 //Sanity check ask for images
 if(typeof images == 'undefined')
-	console.error('Server still not push images to global');
+	console.error('Server still not push images to client global');
 init(images);
