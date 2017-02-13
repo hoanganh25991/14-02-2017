@@ -34,6 +34,18 @@ let Quick_Loop = function(images, slide){
 		}
 	};
 
+	slide.addEventListener('load', function(){
+		console.log('LOAD', new Date().getTime());
+		let step2 = slide.step;
+		setTimeout(function(){
+			requestAnimationFrame(function(){
+				console.log('OUT', new Date().getTime());
+				// console.log('call', ANIMATION_OUT);
+				slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
+			});
+		}, step2 * 1 / 2);
+	});
+
 	let run = function(){
 		if(typeof images[count] == 'undefined'){
 			console.log('End slide loop');
@@ -54,17 +66,12 @@ let Quick_Loop = function(images, slide){
 			let percent2 = (images.length - (count+1)) / images.length;
 			let step2 = easeInOutCubic(percent2) * f;
 
+			slide.step = step2;
+
+
 			slide.src = images[count];
 			slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
 			slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
-
-			setTimeout(function(){
-				requestAnimationFrame(function(){
-					console.log('OUT', new Date().getTime());
-					// console.log('call', ANIMATION_OUT);
-					slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
-				});
-			}, step2 * 1 / 2);
 
 			count++;
 			// console.log(count);
