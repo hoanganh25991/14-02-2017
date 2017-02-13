@@ -56,6 +56,7 @@ foreach($image_files as $file_name){
             margin-left: auto;
             margin-right: auto;
             display: block;
+            transform-origin: bottom left;
         }
 
     </style>

@@ -48,24 +48,22 @@ let Quick_Loop = function(images, slide){
 		// console.log(step);
 
 		setTimeout(function(){
-			requestAnimationFrame(function(){
-				slide.style.transition = `all ${step / 4 / 1000}s ease-in-out`;
-				slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
-				slide.src = images[count];
+			slide.style.transition = `all ${0.1}s ease-in-out`;
+			slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
+			slide.src = images[count];
 
-				//create a point let it disappear
-				setTimeout(function(){
-					requestAnimationFrame(function(){
-						// console.log('call', ANIMATION_OUT);
-						slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
-					});
-				}, step * 3 / 4);
+			//create a point let it disappear
+			setTimeout(function(){
+				requestAnimationFrame(function(){
+					// console.log('call', ANIMATION_OUT);
+					slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
+				});
+			}, step * 1 / 2);
 
-				count++;
-				// console.log(count);
-				//continue run
-				run();
-			});
+			count++;
+			// console.log(count);
+			//continue run
+			run();
 
 		}, step);
 	};
