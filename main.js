@@ -1,18 +1,57 @@
+let Sticker_Loop = function(sticker) {
+	const step = 144;
+	const start = -12;
+	const times = 9;
+	const loop_time = 100;
+
+	let _animate = function(sticker) {
+		setTimeout(function() {
+			requestAnimationFrame(function() {
+				let x = start - (sticker.loop % 3) * step;
+				let y = start - Math.floor(sticker.loop / 3) * step;
+				sticker.loop++;
+
+				sticker.style.backgroundPosition = `${x}px ${y}px`;
+			});
+
+			//breack condition
+			if (sticker.loop == times) {
+				console.log('End loop');
+				sticker.loop = 0;
+				return;
+			}
+
+			_animate(sticker);
+		}, loop_time);
+	};
+
+	let _init = function(sticker) {
+		//init loop			
+		if (typeof sticker.loop == 'undefined')
+			sticker.loop = 0;
+
+
+
+		sticker.addEventListener('mouseover', function() {
+			console.log('hover');
+			_animate(sticker);
+		});
+	};
+
+	return {
+		sticker,
+		init: function(){_init(this.sticker);},
+		animate: function(){_animate(this.sticker);}
+	};
+};
+
+
 //define class as function-style
 let Quick_Loop = function(images, slide){
 	let f = 1000;
 	let count = 0;
 
-	let preload = function(){
-		images.forEach(url =>{
-			let i = new Image;
-			i.src = url;
-		})
-		;
-	}
 
-	//execute preload
-	preload();
 
 	const ANIMATION_OUT = {
 		name: 'transform',
@@ -34,6 +73,8 @@ let Quick_Loop = function(images, slide){
 		}
 	};
 
+	//this is the internal event of slide
+	//to decide when out
 	slide.addEventListener('load', function(){
 		console.log('LOAD', new Date().getTime());
 		let step2 = slide.step;
@@ -49,7 +90,13 @@ let Quick_Loop = function(images, slide){
 	let run = function(){
 		if(typeof images[count] == 'undefined'){
 			console.log('End slide loop');
-			console.time('quick_loop');
+			console.timeEnd('quick_loop');
+			let detail = {
+				slide,
+				say: 'hello world'
+			};
+			let event = new CustomEvent('quick_loop_end', {detail});
+			document.dispatchEvent(event);
 			//reset count
 			count = 0;
 			return;
@@ -66,8 +113,8 @@ let Quick_Loop = function(images, slide){
 			let percent2 = (images.length - (count+1)) / images.length;
 			let step2 = easeInOutCubic(percent2) * f;
 
+			//update current step to transform-out
 			slide.step = step2;
-
 
 			slide.src = images[count];
 			slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
@@ -84,6 +131,15 @@ let Quick_Loop = function(images, slide){
 	return {run};
 }
 
+let preload = function(images){
+	images.forEach(url =>{
+		let i = new Image;
+		i.src = url;
+	});
+	console.log('Image preloaded');
+};
+
+//execute preload
 let shuffle = function(array){
 	let currentIndex = array.length;
 	let temporaryValue;
@@ -102,7 +158,7 @@ let shuffle = function(array){
 	}
 
 	return array;
-}
+};
 
 
 //Run code
@@ -110,18 +166,8 @@ let init = function(images){
 	let shuffed_images = shuffle(images);
 
 	let i1 = shuffed_images.slice(0, 40);
-	console.log(i1);
-
-	let preload = function(images){
-		images.forEach(url =>{
-			let i = new Image;
-			i.src = url;
-		})
-		;
-	}
-
-//execute preload
 	preload(i1);
+
 	//show #tho
 	let tho_p = document.querySelector('#tho');
 	let control = document.querySelector('#control');
@@ -158,6 +204,20 @@ let init = function(images){
 			let quick_loop = Quick_Loop(i1, slide);
 			quick_loop.run();
 		}, 5000);
+	});
+
+	document.addEventListener('quick_loop_end', function(e){
+		console.log(e);
+
+		let say_div = document.querySelector('#say');
+
+		say_div.style.top = 0;
+		say_div.style.opacity = 1;
+
+		let ohYeahSticker = document.querySelector('#oh-yeah');
+		let s = Sticker_Loop(ohYeahSticker);
+		s.init();
+
 	});
 }
 
