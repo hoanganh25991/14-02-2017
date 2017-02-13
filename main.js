@@ -160,13 +160,16 @@ let shuffle = function(array){
 	return array;
 };
 
-
+let audio;
+let quick_loop;
 //Run code
 let init = function(images){
 	let shuffed_images = shuffle(images);
 
 	let i1 = shuffed_images.slice(0, 40);
 	preload(i1);
+
+	audio = new Audio('sound/piano-sonata.mp3');
 
 	//show #tho
 	let tho_p = document.querySelector('#tho');
@@ -201,8 +204,10 @@ let init = function(images){
 			//remove out
 			tho_p.remove();
 			let slide = document.querySelector('#slide');
-			let quick_loop = Quick_Loop(i1, slide);
+			quick_loop = Quick_Loop(i1, slide);
 			quick_loop.run();
+
+			audio.play();
 		}, 5000);
 	});
 
@@ -217,7 +222,6 @@ let init = function(images){
 		let ohYeahSticker = document.querySelector('#oh-yeah');
 		let s = Sticker_Loop(ohYeahSticker);
 		s.init();
-
 	});
 }
 
