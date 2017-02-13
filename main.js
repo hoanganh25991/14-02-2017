@@ -32,10 +32,12 @@ let Sticker_Loop = function(sticker) {
 
 
 
-		sticker.addEventListener('mouseover', function() {
+		// sticker.addEventListener('mouseover', function() {
+		sticker.addEventListener('click', function() {
 			console.log('hover');
 			_animate(sticker);
 		});
+
 	};
 
 	return {
