@@ -222,6 +222,9 @@ let init = function(images){
 		let ohYeahSticker = document.querySelector('#oh-yeah');
 		let s = Sticker_Loop(ohYeahSticker);
 		s.init();
+		setTimeout(function(){
+			s.animate();
+		}, 200);
 	});
 }
 
