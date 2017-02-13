@@ -27,7 +27,7 @@ foreach($image_files as $file_name){
 <html>
 <head>
     <title>tt meo con</title>
-    <meta property="og:url" content="https://tinker.press/hh.html">
+    <meta property="og:url" content="index.php">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Voi con ft. Meo con ＼＿ヘ(ᐖ◞)､">
     <meta property="og:description"
