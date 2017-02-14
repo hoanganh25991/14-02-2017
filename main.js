@@ -100,6 +100,8 @@ let Quick_Loop = function(images, slide){
 		//wait for load total effected than change styl
 		slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
 		slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
+
+		run();
 	});
 
 	let run = function(){
@@ -138,7 +140,7 @@ let Quick_Loop = function(images, slide){
 			count++;
 			// console.log(count);
 			//continue run
-			run();
+			// run();
 
 		}, step);
 	};
