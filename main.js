@@ -171,8 +171,8 @@ let init = function(images){
 	let i1 = shuffed_images.slice(0, 40);
 	preload(i1);
 
-	audio = new Audio('sound/piano-sonata.mp3');
-
+	// audio = new Audio('sound/piano-sonata.mp3');
+    audio = document.getElementById('audio');
 	//show #tho
 	let tho_p = document.querySelector('#tho');
 	let control = document.querySelector('#control');

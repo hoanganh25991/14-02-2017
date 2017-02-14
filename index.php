@@ -34,8 +34,7 @@ foreach($image_files as $file_name){
           content="Anh vẫn ước, bình minh mỗi sáng. Được nhìn em ngắm dáng kiêu xa. Chạy theo một dải ngân hà. Cho tình đẹp mãi mặn mà yêu thương.">
     <meta property="og:image" content="https://tinker.press/images/make-you-smile-2.jpg">
     <meta property="og:site_name" content="tinker.press">
-
-    <!-- Google Fonts embed code -->
+        <!-- Google Fonts embed code -->
     <script type="text/javascript">
         (function() {
             var link_element = document.createElement("link"),
@@ -124,6 +123,7 @@ foreach($image_files as $file_name){
     </style>
 </head>
 <body>
+<audio id='audio' src='sound/piano-sonata.mp3'></audio>
 <div id='slide-container'>
     <p id="tho">
         Anh vẫn ước, bình minh mỗi sáng.<br>
