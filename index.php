@@ -106,7 +106,7 @@ foreach($image_files as $file_name){
             opacity: 0;
         }
         #say {
-
+            width: 600px;
             color: #760000;
             transition: all 1s ease-in-out;
             opacity: 0;

@@ -57,12 +57,12 @@ let Quick_Loop = function(images, slide){
 
 	const ANIMATION_OUT = {
 		name: 'transform',
-		value: 'scale(0,0)'
+		value: 'scale(0, 0)'
 	};
 
 	const ANIMATION_IN = {
 		name: 'transform',
-		value: 'scale(1,1)'
+		value: 'scale(1, 1)'
 	};
 
 	let easeInOutCubic = function(x){
@@ -77,16 +77,29 @@ let Quick_Loop = function(images, slide){
 
 	//this is the internal event of slide
 	//to decide when out
+	// slide.addEventListener('load', function(){
+	slide.addEventListener('transitionend', function(){
+		if(slide.style[ANIMATION_IN.name] == ANIMATION_IN.value){
+			let step2 = slide.step;
+			console.log('TRANSITIONEND', slide.style[ANIMATION_IN.name], new Date().getTime());
+			setTimeout(function(){
+				requestAnimationFrame(function(){
+					console.log('OUT', new Date().getTime());
+					// console.log('call', ANIMATION_OUT);
+					slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
+				});
+			}, step2 * 1 / 2);
+		}else{
+			console.log('TRANSITIONEND', new Date().getTime());
+		}
+	});
+
 	slide.addEventListener('load', function(){
-		console.log('LOAD', new Date().getTime());
+		console.log('IN', new Date().getTime());
 		let step2 = slide.step;
-		setTimeout(function(){
-			requestAnimationFrame(function(){
-				console.log('OUT', new Date().getTime());
-				// console.log('call', ANIMATION_OUT);
-				slide.style[ANIMATION_OUT.name] = ANIMATION_OUT.value;
-			});
-		}, step2 * 1 / 2);
+		//wait for load total effected than change styl
+		slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
+		slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
 	});
 
 	let run = function(){
@@ -110,7 +123,7 @@ let Quick_Loop = function(images, slide){
 		// console.log(step);
 
 		setTimeout(function(){
-			console.log('IN', new Date().getTime());
+			console.log('LOADDING', new Date().getTime());
 			//create a point let it disappear
 			let percent2 = (images.length - (count+1)) / images.length;
 			let step2 = easeInOutCubic(percent2) * f;
@@ -119,8 +132,8 @@ let Quick_Loop = function(images, slide){
 			slide.step = step2;
 
 			slide.src = images[count];
-			slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
-			slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
+			// slide.style.transition = `all ${step2/4/1000}s ease-in-out`;
+			// slide.style[ANIMATION_IN.name] = ANIMATION_IN.value;
 
 			count++;
 			// console.log(count);
